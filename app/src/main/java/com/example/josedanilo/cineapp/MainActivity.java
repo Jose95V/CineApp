@@ -1,6 +1,7 @@
 package com.example.josedanilo.cineapp;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -13,8 +14,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -41,6 +52,7 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                getPelis("http://bdcinemania.esy.es/obtener_peliculas.php");
             }
         });
 
@@ -54,7 +66,19 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+        getPelis(url);
 
+        ListView lv2=(ListView) findViewById(R.id.listViewPeliculas);
+        lv2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Intent intent=new Intent (mContext,detalle.class);
+                intent.putExtra("Pelicula", CineJason.toString());
+                intent.putExtra("numero",position);
+                startActivity(intent);
+
+            }
+        });
 
     }
 
@@ -111,5 +135,42 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    private void getPelis(String url) {
+        final Context context=this;
+        JsonObjectRequest jor=new JsonObjectRequest(
+                url,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        try {
+                            CineJason=response;
+                            JSONArray loans=response.getJSONArray("pelicula");
+
+                            ArrayList<JSONObject> dataSourse=new ArrayList<JSONObject>();
+                            for(int i=0;i<loans.length();i++)
+                            {
+                                dataSourse.add(loans.getJSONObject(i));
+
+                            }
+                            CeldaComplejaAdapter adapter=new CeldaComplejaAdapter(context,0,dataSourse);
+                            ((ListView)findViewById(R.id.listViewPeliculas)).setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                    }
+                }
+        );
+        MySingleton.getInstance(mContext).addToRequestQueue(jor);
+    }
 
 }
