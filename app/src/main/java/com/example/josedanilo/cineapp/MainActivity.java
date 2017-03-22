@@ -26,11 +26,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
     public static Context mContext;
-    JSONObject CineJason=null;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +42,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        setTitle("Peliculas");
-
-
-        mContext=this;
-        String url="http://bdcinemania.esy.es/obtener_peliculas.php";
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +49,6 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                getPelis("http://bdcinemania.esy.es/obtener_peliculas.php");
             }
         });
 
@@ -64,21 +60,7 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-
-
-        getPelis(url);
-
-        ListView lv2=(ListView) findViewById(R.id.listViewPeliculas);
-        lv2.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                Intent intent=new Intent (mContext,detalle.class);
-                intent.putExtra("Pelicula", CineJason.toString());
-                intent.putExtra("numero",position);
-                startActivity(intent);
-
-            }
-        });
+        mContext=this;
 
     }
 
@@ -121,8 +103,12 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_peliculas) {
-            // Handle the camera action
+
+            String url="http://bdcinemania.esy.es/obtener_peliculas.php";
+            getPeliculas(url);
+
         } else if (id == R.id.nav_actores) {
+
 
         } else if (id == R.id.nav_share) {
 
@@ -135,16 +121,23 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private void getPelis(String url) {
+    public Context getContext() {
+        return context;
+    }
+
+    private void getPeliculas(String url) {
         final Context context=this;
         JsonObjectRequest jor=new JsonObjectRequest(
                 url,
+                null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
+                        Logger.getAnonymousLogger().log(Level.INFO,response.toString());
+
                         try {
-                            CineJason=response;
+
                             JSONArray loans=response.getJSONArray("pelicula");
 
                             ArrayList<JSONObject> dataSourse=new ArrayList<JSONObject>();
@@ -157,7 +150,6 @@ public class MainActivity extends AppCompatActivity
                             ((ListView)findViewById(R.id.listViewPeliculas)).setAdapter(adapter);
                             adapter.notifyDataSetChanged();
 
-
                         } catch (JSONException e) {
                             e.printStackTrace();
 
@@ -167,6 +159,8 @@ public class MainActivity extends AppCompatActivity
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+                        //Nota: ponerse a llorar
+                        Logger.getAnonymousLogger().log(Level.SEVERE,"Error Fataliti");
                     }
                 }
         );
