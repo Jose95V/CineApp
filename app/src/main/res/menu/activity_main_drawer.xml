@@ -11,6 +11,10 @@
             android:id="@+id/nav_actores"
             android:icon="@drawable/actors"
             android:title="Actores" />
+        <item
+            android:id="@+id/nav_directores"
+            android:icon="@drawable/directores"
+            android:title="Directores" />
 
     </group>
 

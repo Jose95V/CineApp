@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -58,9 +57,18 @@
                         android:textStyle="normal|bold"
                         />
 
+                    <TextView
+                        android:text="TextView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/raiting"
+                        android:textSize="12sp"
+                        android:textStyle="normal|italic"
+                        />
+
+
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </RelativeLayout>
-
 </LinearLayout>

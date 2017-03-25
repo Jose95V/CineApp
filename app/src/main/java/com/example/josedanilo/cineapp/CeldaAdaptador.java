@@ -15,52 +15,49 @@ import org.json.JSONObject;
 import java.util.List;
 
 /**
- * Created by Jose Danilo on 20/03/2017.
+ * Created by Alexander Caballero on 16/2/2017.
  */
 
-public class CeldaComplejaAdapter extends ArrayAdapter<JSONObject> {
+public class CeldaAdaptador extends ArrayAdapter<JSONObject> {
 
-    public CeldaComplejaAdapter (Context context, int textViewResourseId){
+    public CeldaAdaptador(Context context, int textViewResourseId){
         super(context, textViewResourseId);
     }
-
-    public CeldaComplejaAdapter(Context context, int resourse, List<JSONObject> items){
+    public CeldaAdaptador(Context context, int resourse, List<JSONObject> items){
         super(context,resourse,items);
     }
     @Override
-    public View getView(final int position, final View convertView, ViewGroup parent)
+    public View getView(int position, View convertView, ViewGroup parent)
     {
         View celda = convertView;
         if (celda==null)
         {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            celda = layoutInflater.inflate(R.layout.celda_compleja,null);
+            celda= layoutInflater.inflate(R.layout.celda_compleja,null);
         }
+        //Video video;
+
 
         TextView nombre=(TextView) celda.findViewById(R.id.nombre);
         TextView categoria=(TextView) celda.findViewById(R.id.categoria);
+        TextView raiting=(TextView) celda.findViewById(R.id.raiting);
+
 
         NetworkImageView niv= (NetworkImageView)celda.findViewById(R.id.imagen);
 
         JSONObject elemento=this.getItem(position);
-
-
         try {
-            nombre.setText(elemento.getString("nombreP"));
-            categoria.setText(elemento.getString("categoriaP"));
 
             String url=elemento.getString("imagen_url");
+            nombre.setText(elemento.getString("nombreP"));
+            categoria.setText(elemento.getString("categoriaP"));
+            raiting.setText(elemento.getString("raiting"));
 
-           niv.setImageUrl(url,MySingleton.getInstance(MainActivity.mContext).getImageLoader());
+            niv.setImageUrl(url,MySingleton.getInstance(MainActivity.mContext).getImageLoader());
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-
         return celda;
     }
-
-
 }
-

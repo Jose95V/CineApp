@@ -33,14 +33,12 @@ public class MainActivity extends AppCompatActivity
     public static Context mContext;
     private Context context;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -59,9 +57,11 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        mContext=this;
+        mContext = this;
+
 
     }
+
 
     @Override
     public void onBackPressed() {
@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
+
         return true;
     }
 
@@ -102,13 +103,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_peliculas) {
-
-            String url="http://proyectocine.esy.es/obtener_peliculas.php";
+            String url = "http://proyectopelicula.esy.es/obtener_pelicula.php";
             getPeliculas(url);
-
         } else if (id == R.id.nav_actores) {
-
-
+           // String url = "http://proyectopelicula.esy.es/obtener_actor.php";
+            //getActores(url);
+        } else if (id == R.id.nav_directores) {
+           // String url = "http://proyectopelicula.esy.es/director.php";
+            //getDirectores(url);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -120,34 +122,34 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+
     public Context getContext() {
         return context;
     }
 
+
+    // ------------------------METODOS DE CONSULTAS---------------------------
     private void getPeliculas(String url) {
-        final Context context=this;
-        JsonObjectRequest jor=new JsonObjectRequest(
+        final Context context = this;
+        JsonObjectRequest jor = new JsonObjectRequest(
                 url,
                 null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        Logger.getAnonymousLogger().log(Level.INFO,response.toString());
+                        Logger.getAnonymousLogger().log(Level.INFO, response.toString());
                         try {
+                            JSONArray loans = response.getJSONArray("pelicula");
 
-                            JSONArray loans=response.getJSONArray("pelicula");
-
-                            ArrayList<JSONObject> dataSourse=new ArrayList<JSONObject>();
-                            for(int i=0;i<loans.length();i++)
-                            {
+                            ArrayList<JSONObject> dataSourse = new ArrayList<JSONObject>();
+                            for (int i = 0; i < loans.length(); i++) {
                                 dataSourse.add(loans.getJSONObject(i));
 
                             }
-                            CeldaComplejaAdapter adapter=new CeldaComplejaAdapter(context,0,dataSourse);
-                            ((ListView)findViewById(R.id.listaPeliculas)).setAdapter(adapter);
+                            CeldaAdaptador adapter = new CeldaAdaptador(context, 0, dataSourse);
+                            ((ListView) findViewById(R.id.lista1)).setAdapter(adapter);
                             adapter.notifyDataSetChanged();
-
                         } catch (JSONException e) {
                             e.printStackTrace();
 
@@ -160,7 +162,93 @@ public class MainActivity extends AppCompatActivity
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //Nota: ponerse a llorar
-                        Logger.getAnonymousLogger().log(Level.SEVERE,"Error");
+                        Logger.getAnonymousLogger().log(Level.SEVERE, "Error Fataliti");
+
+
+                    }
+                }
+        );
+        MySingleton.getInstance(mContext).addToRequestQueue(jor);
+    }
+}
+
+  /*  /////Obtener Directores
+    private void getDirectores(String url) {
+        final Context context=this;
+        JsonObjectRequest jor=new JsonObjectRequest(
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Logger.getAnonymousLogger().log(Level.INFO,response.toString());
+                        try {
+                            JSONArray loans=response.getJSONArray("director");
+
+                            ArrayList<JSONObject> dataSourse=new ArrayList<JSONObject>();
+                            for(int i=0;i<loans.length();i++)
+                            {
+                                dataSourse.add(loans.getJSONObject(i));
+
+                            }
+                            CeldaAdaptadorDirectores adapter=new CeldaAdaptadorDirectores(context,0,dataSourse);
+                            ((ListView)findViewById(R.id.lista1)).setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //Nota: ponerse a llorar
+                        Logger.getAnonymousLogger().log(Level.SEVERE,"Error Fataliti");
+                    }
+                }
+        );
+        MySingleton.getInstance(mContext).addToRequestQueue(jor);
+    }
+    /// Obteniendo Actores
+    private void getActores(String url) {
+        final Context context=this;
+        JsonObjectRequest jor=new JsonObjectRequest(
+                url,
+                null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+                        Logger.getAnonymousLogger().log(Level.INFO,response.toString());
+                        try {
+                            JSONArray loans=response.getJSONArray("actor");
+
+                            ArrayList<JSONObject> dataSourse=new ArrayList<JSONObject>();
+                            for(int i=0;i<loans.length();i++)
+                            {
+                                dataSourse.add(loans.getJSONObject(i));
+
+                            }
+                            CeldaAdaptadorActores adapter=new CeldaAdaptadorActores(context,0,dataSourse);
+                            ((ListView)findViewById(R.id.lista1)).setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+
+                        }
+
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        //Nota: ponerse a llorar
+                        Logger.getAnonymousLogger().log(Level.SEVERE,"Error Fataliti");
 
 
                     }
@@ -170,4 +258,5 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-}
+   }
+     */
