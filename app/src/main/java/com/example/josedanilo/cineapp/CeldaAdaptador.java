@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
@@ -37,7 +38,7 @@ public class CeldaAdaptador extends ArrayAdapter<JSONObject> {
 
         TextView nombre=(TextView) celda.findViewById(R.id.nombre);
         TextView categoria=(TextView) celda.findViewById(R.id.categoria);
-        TextView raiting=(TextView) celda.findViewById(R.id.raiting);
+        RatingBar raiting=(RatingBar) celda.findViewById(R.id.raiting);
 
 
         NetworkImageView niv= (NetworkImageView)celda.findViewById(R.id.imagen);
@@ -48,7 +49,7 @@ public class CeldaAdaptador extends ArrayAdapter<JSONObject> {
             String url=elemento.getString("imagen_url");
             nombre.setText(elemento.getString("nombreP"));
             categoria.setText(elemento.getString("categoriaP"));
-            raiting.setText(elemento.getString("raiting"));
+            raiting.setRating(Float.parseFloat(elemento.getString("raiting")));
 
             niv.setImageUrl(url,MySingleton.getInstance(MainActivity.mContext).getImageLoader());
 

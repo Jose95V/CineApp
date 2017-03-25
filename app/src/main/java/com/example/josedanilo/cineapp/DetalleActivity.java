@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.Response;
@@ -17,9 +18,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-/**
- * Created by Jose Danilo on 17/02/2017.
- */
 
 public class DetalleActivity extends AppCompatActivity {
     public static Context mContext;
@@ -71,8 +69,8 @@ public class DetalleActivity extends AppCompatActivity {
             tv2.setText(categoria);
             TextView tv3 = (TextView) findViewById(R.id.descripcionD);
             tv3.setText(descripcion);
-            TextView tv4 = (TextView) findViewById(R.id.raitingD);
-            tv4.setText(raiting);
+            RatingBar tv4 = (RatingBar) findViewById(R.id.raitingD);
+            tv4.setRating(Float.parseFloat(raiting));
 
         } catch (JSONException e) {
             e.printStackTrace();
