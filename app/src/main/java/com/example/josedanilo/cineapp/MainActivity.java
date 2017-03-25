@@ -1,8 +1,6 @@
 package com.example.josedanilo.cineapp;
 
 import android.content.Context;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,14 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -108,7 +103,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_peliculas) {
 
-            String url="http://bdcinemania.esy.es/obtener_peliculas1.php";
+            String url="http://proyectocine.esy.es/obtener_peliculas.php";
             getPeliculas(url);
 
         } else if (id == R.id.nav_actores) {
@@ -152,6 +147,7 @@ public class MainActivity extends AppCompatActivity
                             CeldaComplejaAdapter adapter=new CeldaComplejaAdapter(context,0,dataSourse);
                             ((ListView)findViewById(R.id.listaPeliculas)).setAdapter(adapter);
                             adapter.notifyDataSetChanged();
+
                         } catch (JSONException e) {
                             e.printStackTrace();
 

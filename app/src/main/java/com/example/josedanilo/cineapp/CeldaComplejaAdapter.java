@@ -7,10 +7,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.NetworkImageView;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -21,6 +19,10 @@ import java.util.List;
  */
 
 public class CeldaComplejaAdapter extends ArrayAdapter<JSONObject> {
+
+    public CeldaComplejaAdapter (Context context, int textViewResourseId){
+        super(context, textViewResourseId);
+    }
 
     public CeldaComplejaAdapter(Context context, int resourse, List<JSONObject> items){
         super(context,resourse,items);
@@ -35,25 +37,26 @@ public class CeldaComplejaAdapter extends ArrayAdapter<JSONObject> {
             celda = layoutInflater.inflate(R.layout.celda_compleja,null);
         }
 
-        TextView nombre=(TextView) celda.findViewById(R.id.NombrePeli);
-        TextView categoria=(TextView) celda.findViewById(R.id.CategoriaPeli);
+        TextView nombre=(TextView) celda.findViewById(R.id.nombre);
+        TextView categoria=(TextView) celda.findViewById(R.id.categoria);
 
-        NetworkImageView niv= (NetworkImageView)celda.findViewById(R.id.imagenPeli);
+        NetworkImageView niv= (NetworkImageView)celda.findViewById(R.id.imagen);
 
         JSONObject elemento=this.getItem(position);
 
 
         try {
-            nombre.setText(elemento.getString("nombre"));
-            categoria.setText(elemento.getString("categoria"));
+            nombre.setText(elemento.getString("nombreP"));
+            categoria.setText(elemento.getString("categoriaP"));
 
-            String imagen=elemento.getString("imagen");
+            String url=elemento.getString("imagen_url");
 
-           niv.setImageUrl(imagen,MySingleton.getInstance(MainActivity.mContext).getImageLoader());
+           niv.setImageUrl(url,MySingleton.getInstance(MainActivity.mContext).getImageLoader());
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
 
         return celda;
     }
