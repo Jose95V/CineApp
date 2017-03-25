@@ -2,11 +2,11 @@ package com.example.josedanilo.cineapp;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -14,12 +14,15 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.AdapterView;
+import android.view.View;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.NetworkImageView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,6 +37,7 @@ public class MainActivity extends AppCompatActivity
 
     public static Context mContext;
     private Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,7 +108,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_peliculas) {
 
-            String url="http://bdcinemania.esy.es/obtener_peliculas.php";
+            String url="http://bdcinemania.esy.es/obtener_peliculas1.php";
             getPeliculas(url);
 
         } else if (id == R.id.nav_actores) {
@@ -135,7 +139,6 @@ public class MainActivity extends AppCompatActivity
                     public void onResponse(JSONObject response) {
 
                         Logger.getAnonymousLogger().log(Level.INFO,response.toString());
-
                         try {
 
                             JSONArray loans=response.getJSONArray("pelicula");
@@ -147,24 +150,28 @@ public class MainActivity extends AppCompatActivity
 
                             }
                             CeldaComplejaAdapter adapter=new CeldaComplejaAdapter(context,0,dataSourse);
-                            ((ListView)findViewById(R.id.listViewPeliculas)).setAdapter(adapter);
+                            ((ListView)findViewById(R.id.listaPeliculas)).setAdapter(adapter);
                             adapter.notifyDataSetChanged();
-
                         } catch (JSONException e) {
                             e.printStackTrace();
 
                         }
+
+
                     }
                 },
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         //Nota: ponerse a llorar
-                        Logger.getAnonymousLogger().log(Level.SEVERE,"Error Fataliti");
+                        Logger.getAnonymousLogger().log(Level.SEVERE,"Error");
+
+
                     }
                 }
         );
         MySingleton.getInstance(mContext).addToRequestQueue(jor);
     }
+
 
 }

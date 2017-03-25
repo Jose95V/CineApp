@@ -11,7 +11,7 @@
         <com.android.volley.toolbox.NetworkImageView
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:id="@+id/networkImageViewPeli" />
+            android:id="@+id/imagenPeli" />
 
         <LinearLayout
             android:orientation="vertical"
@@ -23,14 +23,14 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Large Text"
-                android:id="@+id/textViewNombrePeli" />
+                android:id="@+id/NombrePeli" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
-                android:id="@+id/textViewCategoriaPeli" />
+                android:id="@+id/CategoriaPeli" />
         </LinearLayout>
     </LinearLayout>
 

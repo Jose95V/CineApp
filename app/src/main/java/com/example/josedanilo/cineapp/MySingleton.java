@@ -17,17 +17,16 @@ public class MySingleton {
     private static MySingleton mInstance;
     private RequestQueue mRequestQueue;
     private ImageLoader mImageLoader;
-    private static Context mContext;
+    private static Context mCtx;
 
-    private MySingleton(Context context){
-        mContext=context;
-
-        mRequestQueue=getRequestQueue();
+    private MySingleton(Context context) {
+        mCtx = context;
+        mRequestQueue = getRequestQueue();
 
         mImageLoader = new ImageLoader(mRequestQueue,
                 new ImageLoader.ImageCache() {
                     private final LruCache<String, Bitmap>
-                            cache = new LruCache<String, Bitmap>(90);
+                            cache = new LruCache<String, Bitmap>(20);
 
                     @Override
                     public Bitmap getBitmap(String url) {
@@ -39,22 +38,20 @@ public class MySingleton {
                         cache.put(url, bitmap);
                     }
                 });
-
     }
 
-    public static synchronized MySingleton getInstance(Context context)
-    {
-        if (mInstance==null)
-        {
-            mInstance=new MySingleton(context);
+    public static synchronized MySingleton getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new MySingleton(context);
         }
         return mInstance;
     }
 
-    public RequestQueue getRequestQueue(){
-        if (mRequestQueue==null)
-        {
-            mRequestQueue= Volley.newRequestQueue(mContext.getApplicationContext());
+    public RequestQueue getRequestQueue() {
+        if (mRequestQueue == null) {
+            // getApplicationContext() is key, it keeps you from leaking the
+            // Activity or BroadcastReceiver if someone passes one in.
+            mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
         }
         return mRequestQueue;
     }
@@ -67,3 +64,4 @@ public class MySingleton {
         return mImageLoader;
     }
 }
+
