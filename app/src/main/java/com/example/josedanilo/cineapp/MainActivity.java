@@ -103,14 +103,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_peliculas) {
-            String url = "http://proyectopelicula.esy.es/obtener_pelicula.php";
+            String url = "http://proyectocine.esy.es/obtener_peliculas.php";
             getPeliculas(url);
         } else if (id == R.id.nav_actores) {
-            String url = "http://proyectopelicula.esy.es/obtener_actor.php";
+            String url = "http://proyectocine.esy.es/obtener_actores.php";
             getActores(url);
         } else if (id == R.id.nav_directores) {
-           // String url = "http://proyectopelicula.esy.es/director.php";
-            //getDirectores(url);
+            String url = "http://proyectocine.esy.es/obtener_directores.php";
+            getDirectores(url);
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {
@@ -128,7 +128,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    // ------------------------METODOS DE CONSULTAS---------------------------
     private void getPeliculas(String url) {
         final Context context = this;
         JsonObjectRequest jor = new JsonObjectRequest(
@@ -172,7 +171,7 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-  /*  /////Obtener Directores
+    /////Obtener Directores
     private void getDirectores(String url) {
         final Context context=this;
         JsonObjectRequest jor=new JsonObjectRequest(
@@ -184,7 +183,7 @@ public class MainActivity extends AppCompatActivity
 
                         Logger.getAnonymousLogger().log(Level.INFO,response.toString());
                         try {
-                            JSONArray loans=response.getJSONArray("director");
+                            JSONArray loans=response.getJSONArray("directores");
 
                             ArrayList<JSONObject> dataSourse=new ArrayList<JSONObject>();
                             for(int i=0;i<loans.length();i++)
@@ -214,7 +213,7 @@ public class MainActivity extends AppCompatActivity
         MySingleton.getInstance(mContext).addToRequestQueue(jor);
     }
 
-    */
+
     /// Obteniendo Actores
     private void getActores(String url) {
         final Context context=this;

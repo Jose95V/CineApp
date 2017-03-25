@@ -47,7 +47,7 @@ public class CeldaAdaptadorActores extends ArrayAdapter<JSONObject> {
             String url=elemento.getString("foto");
             nombre.setText(elemento.getString("nombre"));
             biografia.setText(elemento.getString("biografia"));
-            
+
             niv.setImageUrl(url,MySingleton.getInstance(MainActivity.mContext).getImageLoader());
 
         } catch (JSONException e) {
