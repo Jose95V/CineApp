@@ -106,8 +106,8 @@ public class MainActivity extends AppCompatActivity
             String url = "http://proyectopelicula.esy.es/obtener_pelicula.php";
             getPeliculas(url);
         } else if (id == R.id.nav_actores) {
-           // String url = "http://proyectopelicula.esy.es/obtener_actor.php";
-            //getActores(url);
+            String url = "http://proyectopelicula.esy.es/obtener_actor.php";
+            getActores(url);
         } else if (id == R.id.nav_directores) {
            // String url = "http://proyectopelicula.esy.es/director.php";
             //getDirectores(url);
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity
         );
         MySingleton.getInstance(mContext).addToRequestQueue(jor);
     }
-}
+
 
   /*  /////Obtener Directores
     private void getDirectores(String url) {
@@ -213,6 +213,8 @@ public class MainActivity extends AppCompatActivity
         );
         MySingleton.getInstance(mContext).addToRequestQueue(jor);
     }
+
+    */
     /// Obteniendo Actores
     private void getActores(String url) {
         final Context context=this;
@@ -225,7 +227,7 @@ public class MainActivity extends AppCompatActivity
 
                         Logger.getAnonymousLogger().log(Level.INFO,response.toString());
                         try {
-                            JSONArray loans=response.getJSONArray("actor");
+                            JSONArray loans=response.getJSONArray("actores");
 
                             ArrayList<JSONObject> dataSourse=new ArrayList<JSONObject>();
                             for(int i=0;i<loans.length();i++)
@@ -259,4 +261,3 @@ public class MainActivity extends AppCompatActivity
 
 
    }
-     */

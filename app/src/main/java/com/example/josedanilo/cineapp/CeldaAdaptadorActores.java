@@ -15,12 +15,13 @@ import org.json.JSONObject;
 import java.util.List;
 
 
-public class CeldaAdaptador extends ArrayAdapter<JSONObject> {
 
-    public CeldaAdaptador(Context context, int textViewResourseId){
+public class CeldaAdaptadorActores extends ArrayAdapter<JSONObject> {
+
+    public CeldaAdaptadorActores(Context context, int textViewResourseId){
         super(context, textViewResourseId);
     }
-    public CeldaAdaptador(Context context, int resourse, List<JSONObject> items){
+    public CeldaAdaptadorActores(Context context, int resourse, List<JSONObject> items){
         super(context,resourse,items);
     }
     @Override
@@ -30,26 +31,23 @@ public class CeldaAdaptador extends ArrayAdapter<JSONObject> {
         if (celda==null)
         {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            celda= layoutInflater.inflate(R.layout.celda_compleja,null);
+            celda= layoutInflater.inflate(R.layout.celda_adaptador_actores,null);
         }
         //Video video;
 
 
-        TextView nombre=(TextView) celda.findViewById(R.id.nombre);
-        TextView categoria=(TextView) celda.findViewById(R.id.categoria);
-        TextView raiting=(TextView) celda.findViewById(R.id.raiting);
+        TextView nombre=(TextView) celda.findViewById(R.id.nombreActor);
+        TextView biografia=(TextView) celda.findViewById(R.id.biografia);
 
-
-        NetworkImageView niv= (NetworkImageView)celda.findViewById(R.id.imagen);
+        NetworkImageView niv= (NetworkImageView)celda.findViewById(R.id.imagenActor);
 
         JSONObject elemento=this.getItem(position);
         try {
 
-            String url=elemento.getString("imagen_url");
-            nombre.setText(elemento.getString("nombreP"));
-            categoria.setText(elemento.getString("categoriaP"));
-            raiting.setText(elemento.getString("raiting"));
-
+            String url=elemento.getString("foto");
+            nombre.setText(elemento.getString("nombre"));
+            biografia.setText(elemento.getString("biografia"));
+            
             niv.setImageUrl(url,MySingleton.getInstance(MainActivity.mContext).getImageLoader());
 
         } catch (JSONException e) {
